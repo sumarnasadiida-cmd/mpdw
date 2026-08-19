@@ -96,7 +96,7 @@ dev.copy(png, "plot_data2.png")
 dev.off()
 ```
 
-## Single Moving Average & Double Moving Average
+## Moving Average
 
 ### Pembagian Data
 
@@ -203,6 +203,8 @@ $$MSE = \frac{1}{n} \sum_{t=1}^{n} (y_t - \hat{y}_t)^2$$
 
 $$MAPE = \frac{1}{n} \sum_{t=1}^{n} \left|\frac{y_t - \hat{y}_t}{y_t}\right| * 100$$
 
+#### Akurasi Data Latih
+
 ```{r}
 #Menghitung nilai keakuratan data latih
 error_train.sma = train_ma.ts-data.ramal[1:length(train_ma.ts)]
@@ -218,6 +220,8 @@ akurasi_train.sma
 ```
 
 Dalam hal ini nilai MAPE data latih pada metode pemulusan SMA sekitar 2%, nilai ini dapat dikategorikan sebagai nilai akurasi yang sangat baik. Selanjutnya dilakukan perhitungan nilai MAPE data uji pada metode pemulusan SMA.
+
+#### Akurasi Data Uji
 
 ```{r}
 #Menghitung nilai keakuratan data uji
@@ -293,6 +297,8 @@ legend("topleft",c("data aktual","data pemulusan","data peramalan"), lty=8, col=
 
 Selanjutnya perhitungan akurasi dilakukan baik pada data latih maupun data uji. Perhitungan akurasi dilakukan dengan ukuran akurasi SSE, MSE dan MAPE.
 
+#### Akurasi Data Latih
+
 ```{r}
 #Menghitung nilai keakuratan data latih
 error_train.dma = train_ma.ts-data.ramal2[1:length(train_ma.ts)]
@@ -308,6 +314,8 @@ akurasi_train.dma
 ```
 
 Perhitungan akurasi pada data latih menggunakan nilai MAPE menghasilkan nilai MAPE yang kurang dari 10% sehingga dikategorikan sangat baik. Selanjutnya, perhitungan nilai akurasi dilakukan pada data uji.
+
+#### Akurasi Data Uji
 
 ```{r}
 #Menghitung nilai keakuratan data uji
@@ -327,7 +335,7 @@ Perhitungan akurasi menggunakan data latih menghasilkan nilai MAPE yang kurang d
 
 Pada data latih, metode SMA lebih baik dibandingkan dengan metode DMA, sedangkan pada data uji, metode DMA lebih baik dibandingkan SMA.
 
-## Single Exponential Smoothing & Double Exponential Smoothing
+## Exponential Smoothing
 
 Metode Exponential Smoothing merupakan metode pemulusan deret waktu dengan memberikan bobot yang menurun secara eksponensial pada data historis, di mana nilai terbaru mendapat bobot lebih besar dibanding nilai yang lebih lama. Metode ini menggunakan satu atau lebih parameter pemulusan yang secara langsung menentukan besar kecilnya bobot setiap pengamatan. Pemilihan parameter yang tepat akan sangat berpengaruh terhadap hasil ramalan. Secara umum, Exponential Smoothing dibedakan menjadi dua jenis, yaitu model tunggal (single) yang digunakan untuk data tanpa tren maupun musiman, serta model ganda (double) yang mampu menangkap adanya tren pada data.
 
@@ -730,7 +738,7 @@ MSEfull
 
 Kedua metode dapat dibandingkan dengan menggunakan ukuran akurasi yang sama. Contoh di atas adalah perbandingan kedua metode dengan ukuran akurasi MSE. Hasilnya didapatkan metode DES lebih baik dibandingkan metode SES dilihat dari MSE yang lebih kecil nilainya.
 
-## Pemulusan Data Musiman
+## Seasonal Smoothing
 
 Pertama impor kembali data baru untuk latihan data musiman.
 
@@ -767,7 +775,10 @@ points(testing.ts)
 
 Metode Holt-Winter untuk peramalan data musiman menggunakan tiga persamaan pemulusan yang terdiri atas persamaan untuk level $(L_t)$, trend $(B_t)$, dan komponen seasonal / musiman $(S_t)$ dengan parameter pemulusan berupa $\alpha$, $\beta$, dan $\gamma$. Metode Holt-Winter musiman terbagi menjadi dua, yaitu metode aditif dan metode multiplikatif. Perbedaan persamaan dan contoh datanya adalah sebagai berikut.
 
-![](images/clipboard-2239154957.png)
+$$L_t = \alpha(Y_t - S_{t-s}) + (1-\alpha)(L_{t-1} + B_{t-1})$$
+
+$$B_t = \beta(L_t - L_{t-1}) + (1-\beta)B_{t-1}$$
+$$S_t = \gamma(Y_t - L_t) + (1-\gamma)S_{t-s}$$
 
 ![](images/clipboard-1209508415.png)
 
