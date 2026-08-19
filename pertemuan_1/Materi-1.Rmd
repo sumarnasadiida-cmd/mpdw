@@ -1,7 +1,12 @@
 ---
-title: "Pertemuan-2"
+title: "Materi-1"
 output:
-  html_document: default
+  html_document: 
+    theme: lumen
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    code_folding: hide
   pdf_document: default
   word_document: default
 ---
@@ -148,15 +153,12 @@ ggplot() +
 
 Ide dasar dari Single Moving Average (SMA) adalah data suatu periode dipengaruhi oleh data periode sebelumnya. Metode pemulusan ini cocok digunakan untuk pola data stasioner atau konstan. Prinsip dasar metode pemulusan ini adalah data pemulusan pada periode ke-t merupakan rata rata dari m buah data pada periode ke-t hingga periode ke (t-m+1).
 
-$$
-S_t = \frac{1}{m} \sum_{i=t-m+1}^{t} X_i
-$$
+$$S_t = \frac{1}{m} \sum_{i=t-m+1}^{t} X_i
+$$$$S_t = \frac{1}{m} \sum_{i=t-m+1}^{t} X_i$$
 
 Data pemulusan pada periode ke-t selanjutnya digunakan sebagai nilai peramalan pada periode ke t+1.
 
-$$
-F_t = S_{t-1}, F_{n,h} = S_n
-$$
+$$F_t = S_{t-1}, F_{n,h} = S_n$$
 
 Pemulusan menggunakan metode SMA dilakukan dengan fungsi `SMA()`. Dalam hal ini akan dilakukan pemulusan dengan parameter `m=4`.
 
@@ -195,15 +197,11 @@ legend("topleft",c("data aktual","data pemulusan","data peramalan"), lty=8, col=
 
 Selanjutnya perhitungan akurasi dilakukan dengan ukuran akurasi *Sum Squares Error* (SSE), *Mean Square Error* (MSE) dan *Mean Absolute Percentage Error* (MAPE). Perhitungan akurasi dilakukan baik pada data latih maupun pada data uji.
 
-$$
-SSE = \sum_{t=1}^{n} (y_t - \hat{y}_t)^2
-$$
-$$
-MSE = \frac{1}{n} \sum_{t=1}^{n} (y_t - \hat{y}_t)^2
-$$
-$$
-MAPE = \frac{1}{n} \sum_{t=1}^{n} \left|\frac{y_t - \hat{y}_t}{y_t}\right| * 100
-$$
+$$SSE = \sum_{t=1}^{n} (y_t - \hat{y}_t)^2$$
+
+$$MSE = \frac{1}{n} \sum_{t=1}^{n} (y_t - \hat{y}_t)^2$$
+
+$$MAPE = \frac{1}{n} \sum_{t=1}^{n} \left|\frac{y_t - \hat{y}_t}{y_t}\right| * 100$$
 
 ```{r}
 #Menghitung nilai keakuratan data latih
@@ -241,31 +239,23 @@ Perhitungan akurasi menggunakan data latih menghasilkan nilai MAPE yang kurang d
 
 Metode pemulusan Double Moving Average (DMA) pada dasarnya mirip dengan SMA. Namun demikian, metode ini lebih cocok digunakan untuk pola data trend. Proses pemulusan dengan rata rata dalam metode ini dilakukan sebanyak 2 kali.
 
--   **Tahap I:**
+- **Tahap I:**
 
-$$
-S_{1,t} = \frac{1}{m} \sum_{i=t-m+1}^{t} X_i
-$$
+$$S_{1,t} = \frac{1}{m} \sum_{i=t-m+1}^{t} X_i$$
 
--   **Tahap II:**
+- **Tahap II:**
 
-$$
-S_{2,t} = \frac{1}{m} \sum_{i=t-m+1}^{t} S_{1,i}
-$$
+$$S_{2,t} = \frac{1}{m} \sum_{i=t-m+1}^{t} S_{1,i}$$
 
 Forecast $h$ langkah ke depan dihitung dengan:
 
-$$
-F_{2,t,t+h} = A_t + B_t \,(h)
-$$
+$$F_{2,t,t+h} = A_t + B_t \,(h)$$
 
 dengan komponen level ($A_t$) dan tren ($B_t$):
 
-$$
-A_t = 2S_{1,t} - S_{2,t}
+$$A_t = 2S_{1,t} - S_{2,t}
 \qquad\text{dan}\qquad
-B_t = \frac{2}{m-1}\,\big(S_{1,t} - S_{2,t}\big)
-$$
+B_t = \frac{2}{m-1}\,\big(S_{1,t} - S_{2,t}\big)$$
 
 ```{r}
 dma <- SMA(data.sma, n = 4)
@@ -390,7 +380,7 @@ ggplot() +
                      plot.caption = element_text(hjust=0.5, size=12))
 ```
 
-## Single Exponential Smoothing
+### Single Exponential Smoothing
 
 Single Exponential Smoothing (SES) adalah metode peramalan deret waktu yang dikembangkan untuk mengatasi kelemahan Moving Average. Jika pada Moving Average setiap data periode sebelumnya dianggap memiliki bobot yang sama, maka SES memberikan bobot yang semakin mengecil secara eksponensial terhadap data lama, sehingga data terbaru diberi bobot lebih besar.
 
@@ -421,17 +411,17 @@ ses.2
 
 Pada fungsi `ses()` , terdapat beberapa argumen yang umum digunakan, yaitu
 
--   `y` : nilai data deret waktu
+- `y` : nilai data deret waktu
 
--   `alpha` : parameter pemulusan utama (0–1), mengatur bobot data terbaru vs data lama.
+- `alpha` : parameter pemulusan utama (0–1), mengatur bobot data terbaru vs data lama.
 
--   `beta` : parameter pemulusan tren.
+- `beta` : parameter pemulusan tren.
 
--   `gamma` : parameter pemulusan musiman.
+- `gamma` : parameter pemulusan musiman.
 
--   `h` : jumlah periode ke depan yang ingin diramalkan (forecast horizon).
+- `h` : jumlah periode ke depan yang ingin diramalkan (forecast horizon).
 
-    Kasus di atas merupakan contoh inisialisasi nilai parameter $\lambda$ dengan nilai `alpha` 0,2 dan 0,7 dan banyak periode data yang akan diramalkan adalah sebanyak 10 periode.
+  Kasus di atas merupakan contoh inisialisasi nilai parameter $\lambda$ dengan nilai `alpha` 0,2 dan 0,7 dan banyak periode data yang akan diramalkan adalah sebanyak 10 periode.
 
 Untuk mendapatkan gambar hasil pemulusan pada data latih dengan fungsi `ses()` , perlu digunakan fungsi `autoplot()` dan `autolayer()` dari *library packages* `ggplot2` .
 
@@ -613,7 +603,7 @@ accuracy(ramalan2, testing$Yt)
 accuracy(ramalanopt, testing$Yt)
 ```
 
-## *Double Exponential Smoothing* (DES)
+### *Double Exponential Smoothing* (DES)
 
 Metode pemulusan *Double Exponential Smoothing* (DES) digunakan untuk data yang memiliki pola tren. Metode DES adalah metode semacam SES, hanya saja dilakukan dua kali, yaitu pertama untuk tahapan 'level' dan kedua untuk tahapan 'tren'. Pemulusan menggunakan metode ini akan menghasilkan peramalan tidak konstan untuk periode berikutnya.
 
@@ -970,7 +960,7 @@ akurasi_testing2 <- data.frame(
 akurasi_testing2
 ```
 
-## Tugas 
+## Tugas
 
 1.  Setiap kelompok memilih satu data time series dengan panjang ≥ 500 periode.
 
@@ -982,4 +972,4 @@ akurasi_testing2
 
     Upload tugas per individu ke GitHub pada folder `Pertemuan-2` dengan format HTML bernama `Tugas-Pertemuan-2.html`.
 
-5.  Deadline Pengumpulan : **Senin, Jam 23.59 WIB**
+5.  Deadline Pengumpulan : **Selasa, Jam 23.59 WIB**
